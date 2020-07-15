@@ -39,7 +39,7 @@
     }
    
     function initializeSocketIo() {
-      socket = io('http://localhost:8081');
+      socket = io.connect('http://localhost:8080');
    
       socket.on('connect', changeName);
       socket.on('rooms', refreshRooms);

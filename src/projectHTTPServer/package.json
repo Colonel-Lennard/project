@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"nodemon src/server/server.js\" \"static .\" \"open http://localhost:8080/src/client/index.html\""
+    "start": "concurrently \"nodemon src/server/server.js\" \"static .\" \"open http://localhost:8080/src/client/login.html\""
   },
   "author": "",
   "license": "ISC",
@@ -13,6 +13,7 @@
     "bootstrap": "^4.0.0-alpha.3",
     "concurrently": "^5.2.0",
     "express": "^4.17.1",
+    "mysql": "^2.18.1",
     "node-static": "^0.7.11",
     "nodemon": "^2.0.4",
     "socket.io": "^2.3.0"
