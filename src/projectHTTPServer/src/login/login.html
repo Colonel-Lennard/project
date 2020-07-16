@@ -1,13 +1,36 @@
+<html lang="en">
 <head>
-<body>
-    <form id="form-login">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username"><br><br>
-        <label for="username">Password:</label>
-        <input type="text" id="password" name="password"><br><br>
-        <input type="submit" value="Submit" id="login-submit">
-      </form>
-      <script src="login.js"></script>
-</body>
-
+<link href="login.css" rel="stylesheet" type="text/css"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial scale=1.0">
+<title>Academic Network of Collaboration/Login</title>
 </head>
+
+<body>
+  <form action="#" class="form-login">
+    <h1>Sign In</h1><br>  
+    
+    <div class="textbox">  
+      <input type="text" id="username" name="username" >
+      <div class="placeholder">Benutzername</div>
+    </div>
+    
+    <div class="textbox">
+      <input type="password" id="password" name="password">
+      <div class="placeholder">Passwort</div><br><br>
+    </div>
+    
+    <div class="submit">
+      <input type="submit" value="Einloggen" id="login-submit">
+    </div><br>
+    
+    <div class="erstellen">
+      <button class="erstellen">
+        <a href="#">Account erstellen</a>
+      </button>
+    </div>
+     
+  </form>
+    <script src="login.js"></script>
+</body>
+</html>
