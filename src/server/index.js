@@ -4,10 +4,11 @@ var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
 app.get('/', (req, res) => {
-    res.sendFile('D:/Git/project/src/projectHTTPServer/src/client/index.html');
+    res.sendFile('D:/Git/project/src/server/client/index.html');
     // res.sendFile('D:/Git/project/src/projectHTTPServer/src/client/main.html');
 });
 
+app.use(express.static('login'));
 app.use(express.static('client'));
 
 io.on('connection', (socket) => {
