@@ -1,9 +1,11 @@
 var express = require('express');
 const { domain } = require('process');
 const { request } = require('http');
+const { RequestError } = require('tedious');
 var app = express();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
+var users = [];
 
 app.get('/', (req, res) => {
     res.sendFile('D:/Git/project/src/server/client/index.html');
@@ -15,19 +17,21 @@ app.use(express.static('client'));
 
 io.on('connection', (socket) => {
     socket.on('chat message', (msg) => {
-      io.emit('chat message', msg);
-      console.log('message:' + msg);
+      var data = {
+        from: socketid,
+        msg: msg,
+      }
+      io.emit('chat message', data);
+      // console.log('message:' + msg);
     });
     io.emit('chat message', 'user connected');
     socket.on('disconnect', () => {
         io.emit('chat message', 'user disconnected');
     });
-    socket.on('chat input', (username) => {
-        io.emit('chat input', username);
+    socket.on('login', (username, password) => {
+      checkLogin(username, password);
+      // users[socketid] = username; 
     });
-    socket.on('login'), (username, password) => {
-      io.emit('login', checkLogin(username, password));
-    }
   });
 
 http.listen(3000, () => {
@@ -38,27 +42,28 @@ var Connection = require('tedious').Connection;
     var config = {
       server: "LPLAPTOP.local",
       authentication: {
-          type: "ntlm",
+          type: "default", //ntlm
           options: {
-              userName: "lennard.polierer",
-              password: "SirHackALot_SBW1998",
+              userName: "testuser",
+              password: "testuser123",
               domain: "SBW",
           }
       },
       options: {
           port: 1433,
-          database: "LOGINDIGITALCOLLAB",
+          database: "DIGITALCOLLAB",
           encrypt: false,
       }
     };  
 
-    console.log(config);
     var connection = new Connection(config);  
     connection.on('connect', function(err) {  
         if (err){
           console.log(err);
         }else{
           console.log('Database connected');
+          // checkLogin('test', 'test');
+          // console.log(bool);
           // executeStatement();
         }
     });  
@@ -66,31 +71,30 @@ var Connection = require('tedious').Connection;
     var Request = require('tedious').Request;  
     var TYPES = require('tedious').TYPES;  
   
-    function checkLogin(username, password) {  
-        request = new Request("SELECT * FROM Users WHERE Username = " + username + " And Password = " + password + "", function(err, rowCount) {  
-        if (err) {  
-            console.log(err);}  
+    function checkLogin(username, password) {
+        var request = new Request("select * from dbo.Users where Username = '" + username + "' And Password = '" + password + "'", function(err) {  
+          if (err) {  
+            console.log(err);}
         });
-        if (rowCount > 0){
-          return true;
-        }
-        return false;
-        var result = "";  
-        request.
-        request.on('row', function(columns) {  
-            columns.forEach(function(column) {  
-              if (column.value === null) {  
-                console.log('NULL');  
-              } else {  
-                result+= column.value + " ";  
-              }  
-            });  
-            console.log(result);  
-            result ="";  
-        });  
-  
-        request.on('done', function(rowCount, more) {  
-        console.log(rowCount + ' rows returned');  
-        });  
-        connection.execSql(request);  
+        // var result = "";  
+        // request.on('row', function(columns) {  
+        //     columns.forEach(function(column) {  
+        //       if (column.value === null) {  
+        //         console.log('NULL');  
+        //       } else {  
+        //         result+= column.value + " ";  
+        //       }  
+        //     });  
+        //     console.log(result);  
+        //     result ="";  
+        // });  
+        request.on('done', function(rowCount, more, rows) {  
+          console.log(rowCount);
+          if (rowCount > 0){
+            io.emit('login-result', true);
+          } else{
+            io.emit('login-result', false);
+          }
+        }); 
+        connection.execSqlBatch(request);
     }  
