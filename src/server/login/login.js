@@ -11,16 +11,12 @@ loginButton.addEventListener("click", (e) => {
     socket.emit('login', myUsername, myPassword);
     socket.on('login-result', function(login){
         if (login == true){
-            // if (myPassword = password){
-                window.location.href = 'main.html';
-                loginForm.username.value = '';
-                loginForm.password.value = '';
+            window.location.href = 'main.html';
+            loginForm.username.value = '';
+            loginForm.password.value = '';
         }else{
             alert('wrong password');
             loginForm.password.value = '';
         }
-        // }else{
-        //     alert('wrong username or password');
-        // }
     });
 });
