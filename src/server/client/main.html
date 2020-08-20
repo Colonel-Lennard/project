@@ -1,46 +1,75 @@
 <!doctype html>
 <html>
-  <head>
+  <!-- <head>
+    <link href="main.css" rel="stylesheet" type="text/css"/>
     <title>Socket.IO chat</title>
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 13px Helvetica, Arial; }
-      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-      form input { border: 0; padding: 10px; width: 90%; margin-right: 0.5%; }
-      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages li { padding: 5px 10px; }
-      #messages li:nth-child(odd) { background: #eee; }
-    </style>
-  </head>
-  <body>
+  </head> -->
+  <!-- <body>
     <ul id="messages"></ul>
     <form action="">
       <input id="m" autocomplete="off" /><button>Send</button>
     </form>
   </body>
 <!doctype html>
-<html>
+<html> -->
   <head>
     <title>Socket.IO chat</title>
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 13px Helvetica, Arial; }
-      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-      form input { border: 0; padding: 10px; width: 90%; margin-right: 0.5%; }
-      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages li { padding: 5px 10px; }
-      #messages li:nth-child(odd) { background: #eee; }
-      #inputRow {position: fixed; bottom:50px; width: 100%; background-color: #000; color: #fff; text-align: left; height: 50px;}
-    </style>
+    <link href="main.css" rel="stylesheet" type="text/css"/>
   </head>
   <body>
-    <ul id="messages"></ul>
-    <div id='inputRow'></div>
-    <form action="">
-      <input type="text" id="message" oninput="onChatInput(this.value)"></input><button>Send</button>
-    </form>
+    <div id="raumauswahl">
+        <li>
+          <img id="logo" src="Logo.png" alt="Logo">
+            <div class="gruppenname">
+              WS18-II
+            </div>
+            <div class="raum">
+              Vorlesungsraum
+            </div>
+            <div class="raum">
+              Lernraum 1
+            </div>
+            <div class="raum">
+              Lernraum 2
+            </div>
+            <div class="raum">
+              Lernraum 3
+            </div>
+            <div class="raum">
+              Lernraum 4
+            </div>
+            <div class="raum">
+              Lernraum 5
+            </div>
+            <div class="raum">
+              Lernraum 6
+            </div>
+            <div class="raum">
+              Lernraum 7
+            </div>
+            <div class="raum">
+              Lernraum 8
+            </div>
+        </li>
+    </div>
+    <div id="inttool">
+      <div id="chat">
+        <ul id="messages"></ul>
+        <!-- <div id='inputRow'></div> -->
+        <form action="">
+          <input type="text" id="message" oninput="onChatInput(this.value)"></input><button>Send</button>
+        </form>
+      </div>
+      <div id="int1">
+        
+      </div>
+      <div id="int2">
+        
+      </div>
+      <div id="int3">
+        
+      </div>
+    </div>  
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="client.js"></script>

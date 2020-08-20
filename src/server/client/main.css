@@ -1,70 +1,127 @@
-*{
-    margin: 0px;
-    padding: 0px;
+* { margin: 0;
+    padding: 0;
     box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
 }
-body{
-    background: url(ba.jpg) no-repeat center;
-    background-size: cover;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+body {
+    font: 13px Helvetica, Arial;
 }
-.form-login{
-    height: 35%;
-    width: 30%;
-    background-color: #ffffff;
-    padding: 50px 40px;
-    border-radius: 10px;
-    min-width: 300px;
-}
-.form-login h1{
-    text-align: center;
-    margin: 48px 0;
-    font-size: 36px;
-    color: #000000;
-}
-.textbox{
-    margin-bottom: 12px;
+form {
+    background: #ffffff;
+    padding: 2px;
+    margin-left: 1px; 
     position: relative;
+    width: 99%;
 }
-.textbox input{
-    width: 100%;
-    height: 70px;
+form input { 
+    padding: 10px;
+    width: 90%;
+    margin-right: 0.5%;
+    background: #9d9d9d;
+    border: 1px solid black;
+}
+form button {
+    width: 9%;
+    background: #0b0b61;
     border: none;
-    background-color: #ededed;
-    border-radius: 10px;
-    color: #000000;
-    font-size: 18px;
-    font-weight: 700;
-    padding: 14px 60px 0px 10px;
+    padding: 10px;
+    color: #fff;
 }
-.placeholder{
-    text-transform: uppercase;
-    font-size: 14px;
-    font-weight: 700;
-    position: absolute;
-    line-height: 70px;
-    left: 10px;
-    user-select: none;
-    pointer-events: none;
-    color: #9d9d9d;
-    top: -16px;
+#raumauswahl{
+    width:10%;
+    /* background-color: #0b0b61; */
+    float: left;
+    height:100vh;
 }
-.submit input{
-    position: relative;
-    background-color: #0b0b61;
-    width: 50%;
-    left: 25%;
-    color: #ffffff;
-    text-align: center;
-    height: 70px;
-    border-radius: 10px;
+#chat{
+    float: right;
+    width: 40vw;
+    margin-top: 3vw;
+    margin-right: 2vw;
+    height: 40vh;
+    border: 3px solid #0b0b61;
+}
+#int3{
+    float: right;
+    width: 40vw;
+    margin-top: 3vw;
+    margin-right: 2vw;
+    height: 40vh;
+    border: 3px solid #0b0b61;
+}
+#int1{
+    float: left;
+    width: 40vw;
+    margin-top: 3vw;
+    margin-left: 2vw;
+    height: 40vh;
+    border: 3px solid #0b0b61;
+}
+#int2{
+    float: left;
+    width: 40vw;
+    margin-top: 3vw;
+    margin-left: 2vw;
+    height: 40vh;
+    border: 3px solid #0b0b61;
+}
+#messages
+{ list-style-type: none;
+    margin: 0;
+    padding: 0;
 
 }
-.erstellen{
-    position: relative;
-    margin-top: 20px;
+#messages li {
+    padding: 5px 10px;
+}
+#messages li:nth-child(odd) {
+    background: #9d9d9d;
+}
+#inputRow {
+    position: absolute;
+    bottom:50px;
+    width: 5%;
+    background-color: #ffffff;
+    color: #9d9d9d;
+    text-align: left;
+    height: 50px;
+}
+#logo{
+    margin-top: 2vh;
+    height: 10vh;
+    width: auto;
+}
+.gruppenname{
+    margin-top: 4vh;
+    width: 100%;
+    height: 8vh;
     text-align: center;
+    color: #0b0b61;
+    font-size: 2em;
+    justify-content: center;
+}
+.raum{
+    width: 100%;
+    height: 8vh;
+    text-align: center;
+    color: #0b0b61;
+    font-size: 2em;
+    justify-content: center;
+}
+.raum:hover{
+    border: 1px solid #9d9d9d;
+}
+.raum:active{
+    border: 1px solid #9d9d9d;
+    background-color: #0b0b61;
+    color: #fff;
+}
+.gruppe{
+    display: none;
+    left: 10%;
+    color: #fff;
+}
+#inttool{
+    width:90%;
+    float: right;
+    height:100vh;
 }
