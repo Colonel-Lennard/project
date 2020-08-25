@@ -1,16 +1,22 @@
 const loginForm = document.getElementById("form-login");
 const loginButton = document.getElementById("login-submit");
+var socket = io();
+// var myUsername = 'Lennard Polierer';
 // const loginErrorMsg = document.getElementById("login-error-msg");
 
 loginButton.addEventListener("click", (e) => {
     e.preventDefault();
-    const username = loginForm.username.value;
-    const password = loginForm.password.value;
-
-    if (username === "admin" && password === "admin") {
-        alert("You have successfully logged in.");
-        window.location.href = "main.html";
-    } else {
-        loginErrorMsg.style.opacity = 1;
-    }
-})
+    myUsername = loginForm.username.value;
+    myPassword = loginForm.password.value;
+    socket.emit('login', myUsername, myPassword);
+    socket.on('login-result', function(login){
+        if (login == true){
+            window.location.href = 'main.html';
+            loginForm.username.value = '';
+            loginForm.password.value = '';
+        }else{
+            alert('wrong password');
+            loginForm.password.value = '';
+        }
+    });
+});
