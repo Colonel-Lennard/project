@@ -18,12 +18,12 @@
     
     <div class="textbox">
       <input type="password" id="password" name="password" required>
-      <div class="placeholder">Passwort</div><br><br>
+      <div class="placeholder">Passwort</div>
     </div>
 
     <div class="textbox">
-      <input type="password" id="passwordValidation" name="passwordValidation" required>
-      <div class="placeholder">Passwort</div><br><br>
+      <input type="password" id="passwordValidation" name="passwordValidation" oninput="onCheckMatching(this.value)" required>
+      <div class="placeholder">Passwort</div>
     </div>
     
     <div class="textbox">

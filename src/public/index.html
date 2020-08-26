@@ -1,0 +1,91 @@
+<html lang="de">
+
+<head>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <title>Digital Collab SPA</title>
+</head>
+<body>
+    <noscript>
+        Script here
+    </noscript>
+    <div id="app"></div>
+
+    <script type="text/babel">
+        class App extends React.Component{
+            state = {
+                name: 'Lennard',
+                age: 22
+            }
+            handleChange = (e) => {
+                this.setState({
+                    name: e.target.value
+                })
+            }
+            handleSumbit = (e) => {
+                e.preventDefault();
+                console.log('form submitted ' + this.state.name);
+            }
+            render() {
+                return (
+                    //only 1 root element
+                    //className entspricht HTML class
+                    <div className="app-content">
+                        <h1>My Name is { this.state.name }</h1>
+                        <form onSubmit={this.handleSumbit}>
+                            <input type="text" onChange={this.handleChange}/>
+                            <button>Submit</button>
+                        </form>
+                    </div>
+                )
+            }
+        }
+
+        ReactDOM.render(<App />, document.getElementById("app"));
+    </script>
+
+    <!-- <script type="text/babel">
+        class App extends React.Component{
+            state = {
+                name: 'Lennard',
+                age: 22
+            }
+            //this is localized by where function is called
+            handleClick = (e) => { //this binding to upper component
+                // console.log(e.target);
+                //change states
+                this.setState({
+                    name: 'Yoshi'
+                });
+                console.log(this.state); //not working ... instead use arrow function
+
+            }
+            handleMouseOver(e){
+                console.log(e);
+            }
+            handleCopy(e){
+                console.log('Try being original for once!');
+            }
+            render() {
+                return (
+                    //only 1 root element
+                    //className entspricht HTML class
+                    <div className="app-content">
+                        <h1>Digital Collab</h1>
+                        <p>My Name is: { this.state.name } and I am { this.state.age }</p>
+                        <button onClick={this.handleClick}>Click Me</button>
+                        <button onMouseOver={this.handleMouseOver}>Hover me</button>
+                        <p onCopy={this.handleCopy}>Urheberrecht!</p>
+                    </div>
+                )
+            }
+        }
+
+        ReactDOM.render(<App />, document.getElementById("app"));
+    </script> -->
+
+
+    <!-- <div id="root"></div> -->
+</body>
+</html>

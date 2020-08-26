@@ -1,5 +1,5 @@
 var socket = io();
-initializeRoomlist('');
+var userName;
 // $(function () {
 //     $('form').submit(function(e){
 //       e.preventDefault(); // prevents page reloading
@@ -21,14 +21,41 @@ initializeRoomlist('');
 //     });
 // });
 
+function logout(){
+  socket.emit('logout', socket.id);
+  window.location = 'index.html';
+};
+
+socket.emit('isUserLoggedIn', socket.id);
+
+socket.on('returnUserLoggedIn', (loggedIn) =>{
+  if (loggedIn == false){
+    window.location = 'index.html';
+  }
+});
+
+getUserName(socket.id);
+initializeRoomlist('');
+
 function initializeRoomlist(username){
     socket.emit('getUserList', username);
 };
 
+function getUserName(socketid){
+  	socket.emit('getMyUserName', socketid);
+};
+
+socket.on('returnMyUserName', (username) => {
+  this.userName = username;
+});
+
 socket.on('returnUserList', (rooms) => {
   var userList = document.getElementById('rooms');
-  for (i = 0; i > rooms.length -1; i++){
-    userList.append($('<li>').text(rooms[i].name));
+  for (i = 0; i < rooms.length -1; i++){
+    var node = document.createElement("LI");                 // Create a <li> node
+    var textnode = document.createTextNode('room'+i);         // Create a text node
+    node.appendChild(textnode);
+    userList.appendChild(node);
   }
 });
 

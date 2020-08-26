@@ -1,3 +1,4 @@
+// import User from './User.js';
 var express = require('express');
 const { domain } = require('process');
 const { request } = require('http');
@@ -5,21 +6,28 @@ const { RequestError } = require('tedious');
 const { isContext } = require('vm');
 var app = express();
 var http = require('http').createServer(app);
-var io = require('socket.io')(http);
 var users = [];
-var activeSockets = new Array();
 var rooms = [];
 
 app.get('/', (req, res) => {
     res.sendFile('D:/Git/project/src/server/client/index.html');
 });
 
-app.use(express.static('login'));
-app.use(express.static('client'));
 
 io.on('connection', (socket) => {
+    console.log('connection initiated '+ socket.id);
+    socket.on('login', (userdata) => {
+        console.log('on to check login for: ' + userdata);
+        checkLogin(userdata, socket);
+    });
+    socket.on('logout', function(userdata) {
+        if (socket.handshake.session.userdata) {
+            delete socket.handshake.session.userdata;
+            socket.handshake.session.save();
+        }
+    });  
     //add users array here
-    // users.push(socket.id);
+    // users.push(new User());
     io.emit('chat message', {
       from: socket.id,
       msg: 'user connected',
@@ -33,19 +41,27 @@ io.on('connection', (socket) => {
       // console.log('message:' + msg);
     });
     socket.on('disconnect', () => {
-      // delete users here
-        io.emit('chat message', {
-        from: socket.id,
-        msg: 'user disconnected',
-    })}
-    );
-    socket.on('login', (username, password) => {
-      checkLogin(username, password);
-      // users.push(new User(userName));
+      removeUser(socket.id, 'user disconnected');
+    });
+    // socket.on('login', (username, password, socketid) => {
+      
+    //   // users.push(new User(userName));
+    // });
+    socket.on('isUserLoggedIn', (socketid) => {
+      socket.emit('returnUserLoggedIn', users.find(element => element.userName == socketid) != null);
     });
     socket.on('signup', (password, username, email, birthday) => {
       console.log('about to create an account');  
       createAcccount(password, username, email, birthday);
+    });
+    // socket.on('logout', (socketid) => {
+    //   removeUser(socket.id, 'user logged out');
+    //   console.log(socket.id);
+    // });
+    socket.on('getMyUserName', (socketid) =>{
+      var foundElement = users.find(element => element.socketid == socketid);
+      console.log('getMyUserName = ' + foundElement.userName);
+      socket.emit('returnMyUserName', foundElement.userName);
     });
     socket.on('getUserList', (username) => {
       rooms[0] = {name: 'raum1', id: '0'};
@@ -59,13 +75,24 @@ http.listen(3000, () => {
   console.log('listening on *:3000');
 });
 
+function removeUser(socketid, message){
+  var foundElement = users.find(element => element.socketid == socketid); //find user in users array with socket id
+  io.emit('chat message', {
+  from: socketid,
+  msg: message,
+  })
+  delete users[foundElement]; //delete found user
+  console.log(users);
+}
+
 var Connection = require('tedious').Connection;  
     var config = {
       server: "LPLAPTOP.local",
       authentication: {
           type: "default", //ntlm
           options: {
-            
+              userName: "sa",
+              password: "sysman$42",
               domain: "SBW",
           }
       },
@@ -91,16 +118,23 @@ var Connection = require('tedious').Connection;
     var Request = require('tedious').Request;  
     var TYPES = require('tedious').TYPES;  
   
-    function checkLogin(username, password) {
-        var request = new Request("select * from dbo.Users where Username = '" + username + "' And Password = '" + password + "'", function(err) {  
+    function checkLogin(userdata, socket) {
+        var request = new Request("select * from dbo.Users where Username = '" + userdata.username + "' And Password = '" + userdata.password + "'", function(err) {  
           if (err) {  
             console.log(err);}
         });
         request.on('done', function(rowCount, more, rows) {  
           console.log(rowCount);
           if (rowCount > 0){
+            console.log('logged in');
             io.emit('login-result', true);
+            user = new User(userdata);
+            user.setAdminRights();
+            users.push(user);
+            socket.handshake.session.userdata = userdata;
+            socket.handshake.session.save();
           } else{
+            console.log('not logged in');
             io.emit('login-result', false);
           }
         }); 
@@ -120,9 +154,10 @@ var Connection = require('tedious').Connection;
       bulkLoad.addColumn('Password', TYPES.NVarChar, { nullable: false });
       bulkLoad.addColumn('Username', TYPES.NVarChar, { nullable: false });
       bulkLoad.addColumn('Email', TYPES.NVarChar, { nullable: false });
+      bulkLoad.addColumn('IsAdmin', Types.Boolean, {nullable: false});
       // bulkLoad.addColumn('Birthday', TYPES.NVarChar, { nullable: false });
       // add rows
-      bulkLoad.addRow(password, username, email); // birthday);
+      bulkLoad.addRow(password, username, email, 0); // birthday);
       
       
       // execute
@@ -147,4 +182,34 @@ var Connection = require('tedious').Connection;
       //      });  
       //  });       
       //  connection.execSql(request);  
-    
+    class User{
+      userName;
+      socketID;
+      canUploadDocument = true;
+      canDownLoadDocument = true;
+      canUseMic = true;
+      canUseCam = true;
+      canShareScreen = true;
+      canCreateRoom = false;
+      canDeleteRoom = false;
+      canCreateUser = false;
+      canDeleteUser = false;
+      canChangeUser = false;
+      canGiveUserRights = false;
+      canKickUser = false;
+  
+      constructor (userdata){
+          this.userName = userdata.userName;
+          this.socketID = userdata.socketID;
+      }
+  
+      setAdminRights(){
+          this.canCreateRoom = true;
+          this.canDeleteRoom = true;
+          this.canCreateUser = true;
+          this.canDeleteUser = true;
+          this.canChangeUser = true;
+          this.canGiveUserRights = true;
+          this.canKickUser = true;
+      }
+    }

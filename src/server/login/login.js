@@ -6,9 +6,12 @@ var socket = io();
 
 loginButton.addEventListener("click", (e) => {
     e.preventDefault();
-    myUsername = loginForm.username.value;
-    myPassword = loginForm.password.value;
-    socket.emit('login', myUsername, myPassword);
+    var userdata = {
+        username: loginForm.username.value, 
+        password: loginForm.password.value,
+        socketid: socket.id,  
+    };
+    socket.emit('login', userdata);
     socket.on('login-result', function(login){
         if (login == true){
             window.location.href = 'main.html';

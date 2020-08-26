@@ -14,6 +14,19 @@ signUpButton.addEventListener('click', (event) => {
     socket.emit('signup', password, username, email, birthday);
 });
 
+function onCheckMatching(passwordValidation){
+    var actualPassword = signUpForm.password.value;
+    if (actualPassword == ''){
+        alert('please enter password first');
+    }
+    if (actualPassword != passwordValidation){
+        document.getElementById('passwordValidation').style.backgroundColor = '#ff0000';
+
+    }else{
+        document.getElementById('passwordValidation').style.backgroundColor = '#00ff000';
+    }
+};
+
 function generatePassword() {
     var length = 8,
         charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
